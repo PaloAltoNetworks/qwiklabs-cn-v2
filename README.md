@@ -1,8 +1,8 @@
-# CN-Series Next-Generation Firewall Deployment
+# Containerized Firewall Deployment
 
-This is a repository for YAMLs to deploy CN-Series Next-Generation firewall from Palo Alto Networks.
+This is a repository for YAMLs to deploy Containerized Firewall which is in Beta program from Palo Alto Networks.
 
-All the YAMLs required to deploy CN-Series on a given cloud platform are present under that cloud platform specific directory. Users can use these YAMLs as is to deploy CN-Series quickly after filling in just these fields from their setup:
+All the YAMLs required to deploy CN-Series on a given cloud platform are present under that cloud platform specific directory. Users can use these YAMLs as is to deploy the Containerized Firewall quickly after filling in just these fields from their setup:
   ```
   In pan-cni.yaml, pan-cn-mgmt.yaml and pan-cn-ngfw.yaml:
       image: <your-private-registry-image-path>
@@ -46,4 +46,4 @@ Refer to the deployment documentations for more details on it.
 # Support Policy
 **Community-Supported aka Best Effort**
 
-These Kubernetes YAML files are released under an as-is, best effort, support policy. These scripts should be seen as community supported and Palo Alto Networks will contribute our expertise as and when possible. We do not provide technical support or help in using or troubleshooting the components of the project through our normal support options such as Palo Alto Networks support teams, or ASC (Authorized Support Centers) partners and backline support options. The underlying product used (the VM-Series firewall) by the scripts or templates are still supported, but the support is only for the product functionality and not for help in deploying or using the template or script itself. Unless explicitly tagged, all projects or work posted in our GitHub repository (at https://github.com/PaloAltoNetworks) or sites other than our official Downloads page on https://support.paloaltonetworks.com are provided under the best effort policy.
+These Kubernetes YAML files are released under an as-is, best effort, support policy as part of the Beta Program. These scripts should be seen as community supported and Palo Alto Networks will contribute our expertise as and when possible. We do not provide technical support or help in using or troubleshooting the components of the project through our normal support options such as Palo Alto Networks support teams, or ASC (Authorized Support Centers) partners and backline support options. The underlying product used (the VM-Series firewall) by the scripts or templates are still supported, but the support is only for the product functionality and not for help in deploying or using the template or script itself. Unless explicitly tagged, all projects or work posted in our GitHub repository (at https://github.com/PaloAltoNetworks) or sites other than our official Downloads page on https://support.paloaltonetworks.com are provided under the best effort policy.
