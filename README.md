@@ -2,7 +2,7 @@
 
 This is a repository for YAMLs to deploy Containerized Firewall which is in Beta program from Palo Alto Networks.
 
-All the YAMLs required to deploy CN-Series on a given cloud platform are present under that cloud platform specific directory. Users can use these YAMLs as is to deploy the Containerized Firewall quickly after filling in just these fields from their setup:
+All the YAMLs required to deploy the firewalls on a given cloud platform are present under that cloud platform specific directory. Users can use these YAMLs as is to deploy the Containerized Firewall quickly after filling in just these fields from their setup:
   ```
   In pan-cni.yaml, pan-cn-mgmt.yaml and pan-cn-ngfw.yaml:
       image: <your-private-registry-image-path>
