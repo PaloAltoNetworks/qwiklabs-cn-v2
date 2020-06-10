@@ -1,6 +1,6 @@
 # CN-Series Next-Generation Firewall Deployment
 
-This is a repository for YAMLs to deploy CN-Series Next-Generation firewall from Palo Alto Networks.
+This is a repository for YAMLs to deploy CN-Series Next-Generation firewall from Palo Alto Networks. It is compatible with PAN-OS 9.2/10.0 Beta 5 Container images.
 
 All the YAMLs required to deploy CN-Series on a given cloud platform are present under that cloud platform specific directory. Users can use these YAMLs as is to deploy CN-Series quickly after filling in just these fields from their setup:
   ```
