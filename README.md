@@ -58,7 +58,6 @@ OpenShift has multus CNI acting as a "meta-plugin", that calls other CNI plugins
 Refer to the deployment documentations for more details on it.
 
 **Documentation**
-
 - [CN-Series Deployment](<https://docs.paloaltonetworks.com/cn-series/10-0/cn-series-deployment.html>)
 - [CN-Series Datasheet](<https://www.paloaltonetworks.com/resources/datasheets/cn-series-container-firewall>)
 
