@@ -12,7 +12,8 @@ data:
   PAN_DEVICE_GROUP: "<panorama-device-group>"
   PAN_TEMPLATE_STACK: "<panorama-template-stack>"
   PAN_CGNAME: "<panorama-collector-group>"
-
+  # ctnr mode: "k8s-service", "k8s-ilbservice"
+  PAN_CTNR_MODE_TYPE: "k8s-service"
 
 #Non-mandatory parameters
   # Recommended to have same name as the cluster name provided in Panorama Kubernetes plugin - helps with easier identification of pods if managing multiple clusters with same Panorama
@@ -32,7 +33,13 @@ data:
   
   # Enable high feature capacities. These need high memory for MGMT pod and
   # higher/matching memory than specified below for NGFW pod.
+  #PAN_NGFW_MEMORY="6Gi"
   #PAN_NGFW_MEMORY="40Gi"
 
   # For enabling faster datapath - AF_XDP, default is AF_PACKETV2. This requires kernel support.
   #PAN_DATA_MODE: "next-gen"
+
+  #HPA Params
+  #PAN_CLOUD: "GKE"
+  #CLUSTER_NAME: "<Cluster name>" #clustername
+  #PUSH_INTERVAL: "15" #time interval to publish metrics to stackdriver

@@ -53,7 +53,7 @@ spec:
              topologyKey: "kubernetes.io/hostname"
       initContainers:
         - name: pan-mgmt-init
-          image: <your-private-registry-image-path>
+          image: gcr.io/vmseries-dev-242318/pan-mgmt-init:0.0.9
           command: ["/usr/bin/pan_start.sh"]
           imagePullPolicy: Always
           securityContext:
@@ -91,7 +91,7 @@ spec:
             value: pan-fw
       containers:
         - name: pan-mgmt
-          image: <your-private-registry-image-path>
+          image: gcr.io/vmseries-dev-242318/panmp:rel210
           terminationMessagePolicy: FallbackToLogsOnError
           command: ["/sbin/pan_start"]
           lifecycle:
@@ -139,6 +139,9 @@ spec:
             mountPath: /opt/pancfg/mgmt/plugins/
           - name: panplugincfg
             mountPath: /opt/plugins/opt/pancfg/mgmt/plugins/
+          - name: devnettun
+            mountPath: /dev/net/tun
+            readOnly: false
           - mountPath: /dev/shm
             name: dshm
           envFrom:
@@ -171,6 +174,9 @@ spec:
                 fieldPath: spec.nodeName
  
       volumes:
+      - name: devnettun
+        hostPath:
+          path: /dev/net/tun
       - name: dshm
         emptyDir:
           medium: Memory

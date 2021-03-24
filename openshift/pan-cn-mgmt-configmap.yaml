@@ -19,7 +19,7 @@ data:
   #CLUSTER_NAME: "<Cluster name>"
 
   #PAN_PANORAMA_IP2: ""
-  
+
   # Comment out to use CERTs otherwise PSK for IPSec between pan-mgmt and pan-ngfw
   # Not using CERTs currently in openshift
   IPSEC_CERT_BYPASS: ""         # No values needed
@@ -33,6 +33,7 @@ data:
   
   # Enable high feature capacities. These need high memory for MGMT pod and
   # higher/matching memory than specified below for NGFW pod.
+  #PAN_NGFW_MEMORY="6Gi"
   #PAN_NGFW_MEMORY="40Gi"
 
   # For enabling faster datapath - AF_XDP, default is AF_PACKETV2. This requires kernel support.

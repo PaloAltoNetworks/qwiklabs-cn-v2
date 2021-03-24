@@ -56,7 +56,7 @@ spec:
         # This container installs the pan CNI binaries
         # and CNI network config file on each node.
         - name: install-pan-cni
-          image: <your-private-registry-image-path>
+          image: gcr.io/gcp-pavmqa/vrp/pan_cni/release-1.0.0/pan-cni-1.0.0:latest
           imagePullPolicy: Always
           command: ["/install-pan-cni.sh", "main"]
           lifecycle:

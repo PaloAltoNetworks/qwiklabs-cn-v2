@@ -1,0 +1,200 @@
+#Refer to README for more details on HPA
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: dataplane-cpu-utilization-pct
+  namespace: kube-system
+spec:
+  name: dataplane-cpu-utilization-pct
+  resource:
+    resource: "deployment"
+  queries:
+    - id: dataplane-cpu-utilization-pct
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "dataplane-cpu-utilization-pct"
+        period: 300
+        stat: Average
+        unit: Percent
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: dataplane-packet-buffer-utilization
+  namespace: kube-system
+spec:
+  name: dataplane-packet-buffer-utilization
+  resource:
+    resource: "deployment"
+  queries:
+    - id: dataplane-packet-buffer-utilization
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "dataplane-packet-buffer-utilization"
+        period: 300
+        stat: Average
+        unit: Percent
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-session-active
+  namespace: kube-system
+spec:
+  name: pan-session-active
+  resource:
+    resource: "deployment"
+  queries:
+    - id: pan-session-active
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-session-active"
+        period: 300
+        stat: Average
+        unit: Count
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-session-utilization
+  namespace: kube-system
+spec:
+  name: pan-session-utilization
+  resource:
+    resource: "deployment"
+  queries:
+    - id: pan-session-utilization
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-session-utilization"
+        period: 300
+        stat: Average
+        unit: Percent
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-session-ssl-proxy-utilization
+  namespace: kube-system
+spec:
+  name: pan-session-ssl-proxy-utilization
+  resource:
+    resource: "deployment"
+  queries:
+    - id: pan-session-ssl-proxy-utilization
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-session-ssl-proxy-utilization"
+        period: 300
+        stat: Average
+        unit: Percent
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-throughput
+  namespace: kube-system
+spec:
+  name: pan-throughput
+  resource:
+    resource: "deployment"
+  queries:
+    - id: pan-throughput
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-throughput"
+        period: 300
+        stat: Average
+        unit: Count
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-packet-rate
+  namespace: kube-system
+spec:
+  name: pan-packet-rate
+  resource:
+    resource: "deployment"
+  queries:
+    - id: pan-packet-rate
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-packet-rate"
+        period: 300
+        stat: Average
+        unit: Count
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-connections-per-second
+  namespace: kube-system
+spec:
+  name: pan-connections-per-second
+  resource:
+    resource: "deployment"
+  queries:
+    - id: pan-connections-per-second
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-connections-per-second"
+        period: 300
+        stat: Average
+        unit: Count
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-dataplane-slots
+  namespace: kube-system
+spec:
+  name: pan-dataplane-slots
+  resource:
+    resource: "statefulset"
+  queries:
+    - id: pan-dataplane-slots
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-dataplane-slots"
+        period: 300
+        stat: Average
+        unit: Count
+      returnData: true
+---
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: pan-logging-rate
+  namespace: kube-system
+spec:
+  name: pan-logging-rate
+  resource:
+    resource: "statefulset"
+  queries:
+    - id: pan-logging-rate
+      metricStat:
+        metric:
+          namespace: "<PAN_NAMESPACE_EKS>"
+          metricName: "pan-logging-rate"
+        period: 300
+        stat: Average
+        unit: Count
+      returnData: true
