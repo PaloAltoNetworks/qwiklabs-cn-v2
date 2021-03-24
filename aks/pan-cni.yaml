@@ -40,7 +40,7 @@ spec:
         - effect: NoExecute
           operator: Exists
       priorityClassName: system-node-critical
-      serviceAccountName: pan-sa
+      serviceAccountName: pan-cni-sa
       # Minimize downtime during a rolling upgrade or deletion; tell Kubernetes to do a "force
       # deletion": https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods.
       terminationGracePeriodSeconds: 5
@@ -65,9 +65,11 @@ spec:
                   key: cni_network_config
             # Name of the primary CNI config file to add our CNI plugin.
             # This is optional. We always wait until this configured (if
-            # configured) or any cni conf file is detected.
-            - name: CNI_CONF_NAME
-              value: "10-azure.conflist"
+            # configured) or any cni conf file is detected. If configured
+            # pan-cni will wait until configured CNI conf becomes primary
+            #- name: CNI_CONF_NAME
+            #  value: "10-azure.conflist"
+            #
             # This is optional. After pan-cni insertion, delay for it to be
             # picked up/propogated before makring pan-cni-ready (default 30 seconds)
             #- name: CNI_READY_DELAY

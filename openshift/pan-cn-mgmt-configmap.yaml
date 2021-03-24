@@ -12,16 +12,17 @@ data:
   PAN_DEVICE_GROUP: "<panorama-device-group>"
   PAN_TEMPLATE_STACK: "<panorama-template-stack>"
   PAN_CGNAME: "<panorama-collector-group>"
-
+  PAN_CTNR_MODE_TYPE: "k8s-service"
 
 #Non-mandatory parameters
   # Recommended to have same name as the cluster name provided in Panorama Kubernetes plugin - helps with easier identification of pods if managing multiple clusters with same Panorama
   #CLUSTER_NAME: "<Cluster name>"
 
   #PAN_PANORAMA_IP2: ""
-
+  
   # Comment out to use CERTs otherwise PSK for IPSec between pan-mgmt and pan-ngfw
-  #IPSEC_CERT_BYPASS: ""         # No values needed
+  # Not using CERTs currently in openshift
+  IPSEC_CERT_BYPASS: ""         # No values needed
   
   # Override auto-detect of jumbo-frame mode and force enable system-wide
   #PAN_JUMBO_FRAME_ENABLED: "true"

@@ -33,8 +33,10 @@ spec:
       labels:
         app: pan-mgmt
         appname: pan-mgmt-sts
+      annotations:
+          paloaltonetworks.com/app: pan-mgmt
     spec:
-      serviceAccountName: pan-sa
+      serviceAccountName: pan-mgmt-sa
       priorityClassName: system-node-critical
       #terminationGracePeriodSeconds: 60 //for graceful exit of prestop hook
       # Turn on podAntiAffinity to schedule replicas on separate nodes
@@ -137,9 +139,6 @@ spec:
             mountPath: /opt/pancfg/mgmt/plugins/
           - name: panplugincfg
             mountPath: /opt/plugins/opt/pancfg/mgmt/plugins/
-          - name: devnettun
-            mountPath: /dev/net/tun
-            readOnly: false
           - mountPath: /dev/shm
             name: dshm
           envFrom:
@@ -170,13 +169,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: spec.nodeName
-          # to bypass encrypted connection to etcd due to EKS bug. No value needed
-          #- name: ETCD_CERT_BYPASS
  
       volumes:
-      - name: devnettun
-        hostPath:
-          path: /dev/net/tun
       - name: dshm
         emptyDir:
           medium: Memory
@@ -215,7 +209,7 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 4Gi
+          storage: 8Gi
   - metadata:
       name: panplugins
     spec:

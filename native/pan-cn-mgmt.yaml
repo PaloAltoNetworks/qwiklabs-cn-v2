@@ -33,8 +33,10 @@ spec:
       labels:
         app: pan-mgmt
         appname: pan-mgmt-sts
+      annotations:
+          paloaltonetworks.com/app: pan-mgmt
     spec:
-      serviceAccountName: pan-sa
+      serviceAccountName: pan-mgmt-sa
       priorityClassName: system-node-critical
       #terminationGracePeriodSeconds: 60 //for graceful exit of prestop hook
       # Turn on podAntiAffinity to schedule replicas on separate nodes
@@ -61,6 +63,8 @@ spec:
           volumeMounts:
           - name: panconfig
             mountPath: /opt/pancfg/
+          - name: varlogpan
+            mountPath: /var/log/pan/
           envFrom:
           - configMapRef:
               name: pan-mgmt-config
@@ -135,9 +139,6 @@ spec:
             mountPath: /opt/pancfg/mgmt/plugins/
           - name: panplugincfg
             mountPath: /opt/plugins/opt/pancfg/mgmt/plugins/
-          - name: devnettun
-            mountPath: /dev/net/tun
-            readOnly: false
           - mountPath: /dev/shm
             name: dshm
           envFrom:
@@ -168,13 +169,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: spec.nodeName
-          # to bypass encrypted connection to etcd due to EKS bug. No value needed
-          #- name: ETCD_CERT_BYPASS
  
       volumes:
-      - name: devnettun
-        hostPath:
-          path: /dev/net/tun
       - name: dshm
         emptyDir:
           medium: Memory
@@ -186,10 +182,21 @@ spec:
       resources:
         requests:
           storage: 20Gi
-      # Disable this to use dynamically provisioned PVs.
-      # Enable this to use manual PVs, after deploying manual PVs with matching
-      # storage capacities (can use provided pan-cn-pv-manual.yaml as is).
-      storageClassName: manual
+      # Note: Use of dynamically provisioned PVs is strongly recommend.
+      # Disable storageClassName to use dynamically provisioned PVs.
+      #
+      # Enable this to use manual PVs (for single node clusters only), after
+      # deploying manual PVs with matching storage capacities (can use 
+      # provided pan-cn-pv-manual.yaml as is).
+      #storageClassName: manual
+      #
+      # Enable this to use Local PVs, after deploying pan-local-storage 
+      # storageclass and PVs (refer provided pan-cn-pv-local.yaml) and 
+      # after creating the mount point on the host nodes for local PVs .
+      storageClassName: pan-local-storage
+      selector:
+        matchLabels:
+            pv: panlogs
   - metadata:
       name: varlogpan
     spec:
@@ -197,10 +204,21 @@ spec:
       resources:
         requests:
           storage: 20Gi
-      # Disable this to use dynamically provisioned PVs.
-      # Enable this to use manual PVs, after deploying manual PVs with matching
-      # storage capacities (can use provided pan-cn-pv-manual.yaml as is).
-      storageClassName: manual
+      # Note: Use of dynamically provisioned PVs is strongly recommend.
+      # Disable storageClassName to use dynamically provisioned PVs.
+      #
+      # Enable this to use manual PVs (for single node clusters only), after
+      # deploying manual PVs with matching storage capacities (can use 
+      # provided pan-cn-pv-manual.yaml as is).
+      #storageClassName: manual
+      #
+      # Enable this to use Local PVs, after deploying pan-local-storage 
+      # storageclass and PVs (refer provided pan-cn-pv-local.yaml) and 
+      # after creating the mount point on the host nodes for local PVs .
+      storageClassName: pan-local-storage
+      selector:
+        matchLabels:
+            pv: panvarlog
   - metadata:
       name: varcores
     spec:
@@ -208,10 +226,21 @@ spec:
       resources:
         requests:
           storage: 2Gi
-      # Disable this to use dynamically provisioned PVs.
-      # Enable this to use manual PVs, after deploying manual PVs with matching
-      # storage capacities (can use provided pan-cn-pv-manual.yaml as is).
-      storageClassName: manual
+      # Note: Use of dynamically provisioned PVs is strongly recommend.
+      # Disable storageClassName to use dynamically provisioned PVs.
+      #
+      # Enable this to use manual PVs (for single node clusters only), after
+      # deploying manual PVs with matching storage capacities (can use 
+      # provided pan-cn-pv-manual.yaml as is).
+      #storageClassName: manual
+      #
+      # Enable this to use Local PVs, after deploying pan-local-storage 
+      # storageclass and PVs (refer provided pan-cn-pv-local.yaml) and 
+      # after creating the mount point on the host nodes for local PVs .
+      storageClassName: pan-local-storage
+      selector:
+        matchLabels:
+            pv: panvarcores
   - metadata:
       name: panplugincfg
     spec:
@@ -219,21 +248,43 @@ spec:
       resources:
         requests:
           storage: 1Gi
-      # Disable this to use dynamically provisioned PVs.
-      # Enable this to use manual PVs, after deploying manual PVs with matching
-      # storage capacities (can use provided pan-cn-pv-manual.yaml as is).
-      storageClassName: manual
+      # Note: Use of dynamically provisioned PVs is strongly recommend.
+      # Disable storageClassName to use dynamically provisioned PVs.
+      #
+      # Enable this to use manual PVs (for single node clusters only), after
+      # deploying manual PVs with matching storage capacities (can use 
+      # provided pan-cn-pv-manual.yaml as is).
+      #storageClassName: manual
+      #
+      # Enable this to use Local PVs, after deploying pan-local-storage 
+      # storageclass and PVs (refer provided pan-cn-pv-local.yaml) and 
+      # after creating the mount point on the host nodes for local PVs .
+      storageClassName: pan-local-storage
+      selector:
+        matchLabels:
+            pv: panplugincfg
   - metadata:
       name: panconfig
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 4Gi
-      # Disable this to use dynamically provisioned PVs.
-      # Enable this to use manual PVs, after deploying manual PVs with matching
-      # storage capacities (can use provided pan-cn-pv-manual.yaml as is).
-      storageClassName: manual
+          storage: 8Gi
+      # Note: Use of dynamically provisioned PVs is strongly recommend.
+      # Disable storageClassName to use dynamically provisioned PVs.
+      #
+      # Enable this to use manual PVs (for single node clusters only), after
+      # deploying manual PVs with matching storage capacities (can use 
+      # provided pan-cn-pv-manual.yaml as is).
+      #storageClassName: manual
+      #
+      # Enable this to use Local PVs, after deploying pan-local-storage 
+      # storageclass and PVs (refer provided pan-cn-pv-local.yaml) and 
+      # after creating the mount point on the host nodes for local PVs .
+      storageClassName: pan-local-storage
+      selector:
+        matchLabels:
+            pv: panconfig
   - metadata:
       name: panplugins
     spec:
@@ -241,7 +292,18 @@ spec:
       resources:
         requests:
           storage: 200Mi
-      # Disable this to use dynamically provisioned PVs.
-      # Enable this to use manual PVs, after deploying manual PVs with matching
-      # storage capacities (can use provided pan-cn-pv-manual.yaml as is).
-      storageClassName: manual
+      # Note: Use of dynamically provisioned PVs is strongly recommend.
+      # Disable storageClassName to use dynamically provisioned PVs.
+      #
+      # Enable this to use manual PVs (for single node clusters only), after
+      # deploying manual PVs with matching storage capacities (can use 
+      # provided pan-cn-pv-manual.yaml as is).
+      #storageClassName: manual
+      #
+      # Enable this to use Local PVs, after deploying pan-local-storage 
+      # storageclass and PVs (refer provided pan-cn-pv-local.yaml) and 
+      # after creating the mount point on the host nodes for local PVs .
+      storageClassName: pan-local-storage
+      selector:
+        matchLabels:
+            pv: panplugins
