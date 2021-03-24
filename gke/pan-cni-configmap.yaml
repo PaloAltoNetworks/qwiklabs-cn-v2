@@ -24,6 +24,14 @@ data:
   #        "mode": "daemonset" - normal operation mode
   #                "teardown" - run in tearing down mode. As pan-cn-ngfw pod exits
   #                             or starts, it will cleanup all info.
+  #                 "service" - run in CN-Series V2, FW as a service in K8S environment
+  #                 "ilbservice" - run in CN-Series V2, FW as a service in public cloud
+  #        "dpservicename":  This is need if mode is "service". It is the name of the DP
+  #                          service deployed.
+  #        "dpservicenamespace": - This is need if mode is "service". It is the namespace of the DP
+  #                          service deployed.
+  #        "passiprange": List of ip ranges which dont need to go to the DP firewall pod
+  #                        e.g "passiprange": "10.52.0.0/14,10.56.0.0/20"      
   #        "maxpod_failover": "failopen" - when max pods are being served, bypass
   #                                        firewall for the new pods. Defaults to
   #                                        wait/block on free spot.
@@ -41,9 +49,14 @@ data:
           "type": "pan-cni",
           "log_level": "debug",
           "appinfo_dir": "/var/log/pan-appinfo",
-          "mode": "daemonset",
+          "mode": "service",
+          "cloud": "gke",
+          "dpservicename": "pan-ngfw-svc",
+          "dpservicenamespace": "kube-system",
           "firewall": [ "pan-fw" ],
           "interfaces": ["eth0"],
+          "interfacesip": [""],
+          "interfacesmac": [""],
           "kubernetes": {
               "kubeconfig": "__KUBECONFIG_FILEPATH__",
               "cni_bin_dir": "/home/kubernetes/bin",

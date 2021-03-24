@@ -12,23 +12,17 @@ data:
   PAN_DEVICE_GROUP: "<panorama-device-group>"
   PAN_TEMPLATE_STACK: "<panorama-template-stack>"
   PAN_CGNAME: "<panorama-collector-group>"
-
-  # Intended License Bundle type - "CN-X-BASIC", "CN-X-BND1", "CN-X-BND2"
-  # based on the authcode applied on the Panorama K8S plugin"
-  PAN_BUNDLE_TYPE: "<license-bundle-type>"
+  # ctnr mode: "k8s-service", "k8s-ilbservice"
+  PAN_CTNR_MODE_TYPE: "k8s-service"
 
 #Non-mandatory parameters
   # Recommended to have same name as the cluster name provided in Panorama Kubernetes plugin - helps with easier identification of pods if managing multiple clusters with same Panorama
   #CLUSTER_NAME: "<Cluster name>"
 
   #PAN_PANORAMA_IP2: ""
-  
-  # Comment out to use CERTs otherwise bypass encrypted connection to etcd in pan-mgmt.
-  # Not using CERTs for etcd due to EKS bug
-  ETCD_CERT_BYPASS: ""          # No value needed
 
   # Comment out to use CERTs otherwise PSK for IPSec between pan-mgmt and pan-ngfw
-  # IPSEC_CERT_BYPASS: ""         # No values needed
+  #IPSEC_CERT_BYPASS: ""         # No values needed
   
   # Override auto-detect of jumbo-frame mode and force enable system-wide
   #PAN_JUMBO_FRAME_ENABLED: "true"
@@ -39,4 +33,13 @@ data:
   
   # Enable high feature capacities. These need high memory for MGMT pod and
   # higher/matching memory than specified below for NGFW pod.
+  #PAN_NGFW_MEMORY="6Gi"
   #PAN_NGFW_MEMORY="40Gi"
+
+  # For enabling faster datapath - AF_XDP, default is AF_PACKETV2. This requires kernel support.
+  #PAN_DATA_MODE: "next-gen"
+
+  #HPA params
+  #PAN_CLOUD: "EKS"
+  #PAN_NAMESPACE_EKS: "EKSNamespace"
+  #PUSH_INTERVAL: "15" #time interval to publish metrics to AWS cloudwatch
