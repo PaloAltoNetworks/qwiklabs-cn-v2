@@ -1,12 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
-  name: pan-ngfw-dep
+  name: pan-ngfw-ds
   namespace: kube-system
   labels:
       app: pan-ngfw
 spec:
-  strategy:
+  updateStrategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
@@ -25,7 +25,7 @@ spec:
           # This needs to be in the list of "firewall" in pan-cni-configmap.yaml
           paloaltonetworks.com/firewall: pan-fw
 
-          # Below annotation is always fixed and is used to detect this Deployment.
+          # Below annotation is always fixed and is used to detect this Daemonset.
           #     paloaltonetworks.com/app: pan-fw
           paloaltonetworks.com/app: pan-fw
 
@@ -49,8 +49,8 @@ spec:
       #  firewall: pan-ngfw-ds
       containers:
         - name: pan-ngfw-container
-          image: 688382500471.dkr.ecr.us-west-2.amazonaws.com/ctnr/pandp:371
-          command: ["/sbin/pan_start","newnns","nspan-fw","eac8617ee91"]
+          image: <your-private-registry-image-path>
+          command: ["/sbin/pan_pause"]
           lifecycle:
             preStop:
               exec:
@@ -71,18 +71,17 @@ spec:
             failureThreshold: 2
           imagePullPolicy: Always
           securityContext:
-            capabilities:
-              #add: ["NET_ADMIN","NET_RAW","NET_BROADCAST","NET_BIND_SERVICE"]
-              add: ["ALL"]
             #privileged: true # TBD: needed for XDP
+            capabilities:
+              add: ["NET_ADMIN","NET_RAW","NET_BROADCAST","NET_BIND_SERVICE"]
           resources:
             requests:
               # configurable based on desired throughput, number of running pods
               cpu: "1"
-              memory: "4Gi"
+              memory: "2Gi"
             limits:
               cpu: "1"
-              memory: "4Gi"
+              memory: "2.25Gi"
           volumeMounts:
           - mountPath: /opt/appinfo
             name: appinfo

@@ -1,12 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
-  name: pan-ngfw-dep
+  name: pan-ngfw-ds
   namespace: kube-system
   labels:
       app: pan-ngfw
 spec:
-  strategy:
+  updateStrategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
@@ -54,8 +54,8 @@ spec:
       #  firewall: pan-ngfw-ds
       containers:
         - name: pan-ngfw-container
-          image: 10.0.13.88:5000/pandp:b25
-          command: ["/sbin/pan_start","newnns","nspan-fw","eac8617ee91"]
+          image: <your-private-registry-image-path>
+          command: ["/sbin/pan_pause"]
           lifecycle:
             preStop:
               exec:
@@ -84,10 +84,10 @@ spec:
             requests:
               # configurable based on desired throughput, number of running pods
               cpu: "1"
-              memory: "4Gi"
+              memory: "2Gi"
             limits:
               cpu: "1"
-              memory: "4Gi"
+              memory: "2.25Gi"
           volumeMounts:
           - mountPath: /opt/appinfo
             name: appinfo

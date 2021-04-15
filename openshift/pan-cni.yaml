@@ -57,7 +57,7 @@ spec:
         # This container installs the pan CNI binaries
         # and CNI network config file on each node.
         - name: install-pan-cni
-          image: 10.0.13.88:5000/pan-cni:nbansal-20200407-2
+          image: <your-private-registry-image-path>
           imagePullPolicy: Always
           command: ["/install-pan-cni.sh", "main"]
           lifecycle:

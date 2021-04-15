@@ -7,8 +7,6 @@ data:
   PAN_SERVICE_NAME: pan-mgmt-svc    # should match the pan-cn-mgmt.yaml's Service name
   FAILOVER_MODE: failopen           # licensing failure behavior
   DP_RINGBUFFER: "60000"            # buffer count for memory/performance control
-  # ctnr mode: "k8s-service", "k8s-ilbservice"
-  PAN_CTNR_MODE_TYPE: "k8s-service"
   
   # Comment out to use CERTs otherwise PSK for IPSec between pan-mgmt and pan-ngfw
   #IPSEC_CERT_BYPASS: ""            # No values needed
