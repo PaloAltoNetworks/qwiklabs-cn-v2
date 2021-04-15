@@ -57,7 +57,7 @@ spec:
         # This container installs the pan CNI binaries
         # and CNI network config file on each node.
         - name: install-pan-cni
-          image: <your-private-registry-image-path>
+          image: 10.0.13.88:5000/pan-cni:nbansal-20200407-2
           imagePullPolicy: Always
           command: ["/install-pan-cni.sh", "main"]
           lifecycle:
@@ -86,7 +86,14 @@ spec:
             # picked up/propogated before makring pan-cni-ready (default 30 seconds)
             #- name: CNI_READY_DELAY
             #  value: "10"
-
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           volumeMounts:
             - mountPath: /host/opt/cni/bin
               name: cni-bin-dir

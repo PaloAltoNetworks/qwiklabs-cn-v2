@@ -53,7 +53,7 @@ spec:
              topologyKey: "kubernetes.io/hostname"
       initContainers:
         - name: pan-mgmt-init
-          image: <your-private-registry-image-path>
+          image: gcr.io/vmseries-dev-242318/pan-mgmt-init:0.0.9
           command: ["/usr/bin/pan_start.sh"]
           imagePullPolicy: Always
           securityContext:
@@ -91,7 +91,7 @@ spec:
             value: pan-fw
       containers:
         - name: pan-mgmt
-          image: <your-private-registry-image-path>
+          image: gcr.io/vmseries-dev-242318/panmp:rel210
           terminationMessagePolicy: FallbackToLogsOnError
           command: ["/sbin/pan_start"]
           lifecycle:
@@ -144,6 +144,10 @@ spec:
           envFrom:
           - configMapRef:
               name: pan-mgmt-config
+          # Uncomment the below 3 lines to enable HPA
+          #envFrom:
+          #- configMapRef:
+          #    name: pan-hpa-config
           env:
           - name: MY_POD_UID
             valueFrom:

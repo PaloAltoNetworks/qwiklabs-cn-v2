@@ -1,8 +1,9 @@
-# CN-Series Next-Generation Firewall Deployment
+# CN-Series V2 Next-Generation Firewall Deployment
 
-This is a repository for YAMLs to deploy CN-Series Next-Generation firewall from Palo Alto Networks.
+This is a repository for YAMLs to deploy CN-Series V2 Next-Generation firewall from Palo Alto Networks.
 
 All the YAMLs required to deploy CN-Series on a given cloud platform are present under that cloud platform specific directory. Users can use these YAMLs as is to deploy CN-Series quickly after filling in just these fields from their setup:
+If HPA is being deployed, use the cloud specific pan-cn-mgmt-configmap.yaml present under that cloud platform specific directory instead of using pan-cn-mgmt-configmap.yaml from the common directory.
   ```
   In pan-cni.yaml, pan-cn-mgmt.yaml and pan-cn-ngfw.yaml:
       image: <your-private-registry-image-path>
@@ -26,12 +27,13 @@ For production deployment, it's expected users would want to customize the YAMLs
   **Note**: For complex setup and advanced topics needing modifications in the YAMLs, refer to the deployment documentations for details. Changing a field might require modification in multiple places and multiple YAMLs.
 
 
-Once the YAMLs have been modified as desired, these YAMLs can be deployed as, also ensure pan-cn-mgmt-slot-crd.yaml is deployed before pan-cn-mgmt-slot-cr.yaml:
+Once the YAMLs have been modified as desired, these YAMLs can be deployed as, please ensure pan-cn-ngfw-svc.yaml is deployed before pan-cni.yaml and pan-cn-mgmt-slot-crd.yaml is deployed before pan-cn-mgmt-slot-cr.yaml:
 ``` 
 kubectl apply -f plugin-serviceaccount.yaml
 kubectl apply -f pan-cni-serviceaccount.yaml
 kubectl apply -f pan-mgmt-serviceaccount.yaml
 kubectl apply -f pan-cni-configmap.yaml
+kubectl apply -f pan-cn-ngfw-svc.yaml
 kubectl apply -f pan-cni.yaml
 kubectl apply -f pan-cn-mgmt-secret.yaml
 kubectl apply -f pan-cn-mgmt-configmap.yaml
@@ -40,6 +42,61 @@ kubectl apply -f pan-cn-mgmt-slot-cr.yaml
 kubectl apply -f pan-cn-mgmt.yaml
 kubectl apply -f pan-cn-ngfw-configmap.yaml
 kubectl apply -f pan-cn-ngfw.yaml
+```
+
+For HPA, it's expected users would want to customize the YAMLs as per below:
+  -  Update the metrics that would be used for scaling dps in pan-cn-hpa-dp.yaml and mps pan-cn-hpa-mp.yaml.
+  -  If mp is deployed in custom namespace, update the pan-cn-adapter yaml with custom namespace instead of kubesystem.
+  -  Update the pan-cn-hpa-dp.yaml and pan-cn-hpa-mp.yaml for <HPA-NAME> as provided in the pn-cn-mgmt-configmap.yaml
+onutilization, dppansessionsslproxyutilization, dppanthroughput, dppanpacketrate, dppanconnectionspersecond
+  - update the pan-cn-hpa-dp.yaml with all metrics to be used for scaling dp, provided yaml contains all the metrics being published for dp
+  - update the pan-cn-hpa-mp.yaml with all metrics to be used for scaling mp, provided yaml contains all the metrics being pu
+blished for dp
+  - provided pan-cn-hpa-mp.yaml and pan-cn-hpa-dp.yaml contain scaling policies which ensure 1 pod is being scaled up/down at a time, update the policies for scaling if more pods needs to be scaled. Value provided for periodSeconds to scaleup is base
+d on max time pod takes to be in ready state
+GKE
+```
+kubectl apply -f pan-cn-adapter.yaml
+kubectl apply -f pan-cn-hpa-crole.yaml
+kubectl apply -f pan-cn-hpa-dp.yaml
+kubectl apply -f pan-cn-hpa-mp.yaml
+```
+
+For HPA, it's expected users would want to customize the YAMLs as per below:
+  -  Update the metrics that would be used for scaling dps in pan-cn-hpa-dp.yaml and mps pan-cn-hpa-mp.yaml.
+  -  If mp is deployed in custom namespace, update the pan-cn-adapter yaml with custom namespace instead of kubesystem.
+  -  pan-cn-externalmetrics.yaml contains all the metrics published for dp and mp 
+  -  mp scaling metrics are mppanloggingrate, dppandataplaneslots
+  -  dp scaling metrics are dpdataplanecpuutilizationpct, ,dpdataplanepacketbufferutilization, dppansessionactive, dppansessionutilization, dppansessionsslproxyutilization, dppanthroughput, dppanpacketrate, dppanconnectionspersecond
+  - update the pan-cn-hpa-dp.yaml with all metrics to be used for scaling dp, provided yaml only contains single metric for example
+  - update the pan-cn-hpa-mp.yaml with all metrics to be used for scaling mp, provided yaml only contains single metric for example
+  - provided pan-cn-hpa-mp.yaml and pan-cn-hpa-dp.yaml contain scaling policies which ensure 1 pod is being scaled up/down at a time, update the policies for scaling if more pods needs to be scaled. Value provided for periodSeconds to scaleup is base
+d on max time pod takes to be in ready state
+EKS
+```
+kubectl apply -f pan-cn-adapter.yaml
+kubectl apply -f pan-cn-externalmetrics.yaml
+kubectl apply -f pan-cn-hpa-dp.yaml
+kubectl apply -f pan-cn-hpa-mp.yaml
+```
+
+For HPA, it's expected users would want to customize the YAMLs as per below:
+  -  Update the metrics that would be used for scaling dps in pan-cn-hpa-dp.yaml and mps pan-cn-hpa-mp.yaml.
+  -  Update pan-cn-hpa-secret.yaml for Azure Application Insight specific details
+  -  If mp is deployed in custom namespace, update the pan-cn-adapter yaml with custom namespace instead of kubesystem.
+  -  Update the pan-cn-hpa-dp.yaml and pan-cn-hpa-mp.yaml for <HPA-NAME> as provided in the pn-cn-mgmt-configmap.yaml
+AKS
+  -  mp scaling metrics are mppanloggingrate, dppandataplaneslots
+  -  dp scaling metrics are dpdataplanecpuutilizationpct, ,dpdataplanepacketbufferutilization, dppansessionactive, dppansessionutilization, dppansessionsslproxyutilization, dppanthroughput, dppanpacketrate, dppanconnectionspersecond
+  - update the pan-cn-hpa-dp.yaml with all metrics to be used for scaling dp, provided yaml only contains single metric for example
+  - update the pan-cn-hpa-mp.yaml with all metrics to be used for scaling mp, provided yaml only contains single metric for example
+  - provided pan-cn-hpa-mp.yaml and pan-cn-hpa-dp.yaml contain scaling policies which ensure 1 pod is being scaled up/down at a time, update the policies for scaling if more pods needs to be scaled. Value provided for periodSeconds to scaleup is based on max time pod takes to be in ready state
+```
+kubectl apply -f pan-cn-hpa-secret.yaml
+kubectl apply -f pan-cn-adapter.yaml
+kubectl apply -f pan-cn-custommetrics.yaml
+kubectl apply -f pan-cn-hpa-dp.yaml
+kubectl apply -f pan-cn-hpa-mp.yaml
 ```
 
 To enable the security for the application pods, apply the following annotation to their YAMLs, OR, to enable the security for all the pods in a given namespace, apply this annotation to the namespace: ```     paloaltonetworks.com/firewall: pan-fw``` e.g. for "default" namespace 
