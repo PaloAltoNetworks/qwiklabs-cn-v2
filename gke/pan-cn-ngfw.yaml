@@ -49,7 +49,7 @@ spec:
       #  firewall: pan-ngfw-ds
       containers:
         - name: pan-ngfw-container
-          image: 688382500471.dkr.ecr.us-west-2.amazonaws.com/ctnr/pandp:371
+          image: us.gcr.io/panw-gcp-team-testing/paloaltonetworks/panos_cn_ngfw:10.1.0-b17
           command: ["/sbin/pan_start","newnns","nspan-fw","eac8617ee91"]
           lifecycle:
             preStop:

@@ -9,9 +9,9 @@ data:
 
   # Panorama settings
   PAN_PANORAMA_IP: "<panorama-IP>"
-  PAN_DEVICE_GROUP: "<panorama-device-group>"
-  PAN_TEMPLATE_STACK: "<panorama-template-stack>"
-  PAN_CGNAME: "<panorama-collector-group>"
+  PAN_DEVICE_GROUP: "dev-dg"
+  PAN_TEMPLATE_STACK: "k8s-stack"
+  PAN_CGNAME: "Panorama"
   # ctnr mode: "k8s-service", "k8s-ilbservice"
   PAN_CTNR_MODE_TYPE: "k8s-service"
 
